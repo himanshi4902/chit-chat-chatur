@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/User.js";
+import { generateToken } from "../utils/token-manager.js";
 import { hash,compare } from "bcrypt";
 
 export const getAllUsers = async (request: Request, response: Response, next: NextFunction) => {
@@ -43,6 +44,15 @@ export const userLogin = async (request: Request, response: Response, next: Next
     if(!isPasswordCorrect){
         return response.status(403).json({message: "Incorrect password"});
     }
+    // function in the code means that the "auth-token" cookie will be removed from the client's browser when the HTTP response is sent.
+    response.clearCookie("auth-token",{path: "/",domain: "localhost",httpOnly: true,signed:true});
+    
+    const token = generateToken(existingUser._id.toString(),existingUser.email,"7d");
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+    //we want to send the cookie from backend to frontend for that we will the cookie parser
+    response.cookie("auth-token",token,{path: "/",domain: "localhost",expires,httpOnly: true,signed:true});
+
     return response.status(201).json({message: "ok",id : existingUser._id.toString()});
     }catch(error){
         console.log(error);
