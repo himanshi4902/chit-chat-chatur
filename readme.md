@@ -1,6 +1,7 @@
 ## CHIT CHAT CHATUR
 
 This is a Chatbot application inspired by ChatGPT, built using the MERN (MongoDB, Express.js, React.js, Node.js) stack and OpenAI. It allows users to interact with a customizable chatbot interface, where each message from the user is stored in a database and can be retrieved or deleted.
+It is a full stack project.
 
 # Features
 - Customizable Chatbot: Users can interact with a chatbot interface inspired by ChatGPT.
